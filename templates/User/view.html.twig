@@ -1,0 +1,24 @@
+
+<ul>
+    {% if user.pays is null %}
+        <li> No country in the database</li>
+    {% else %}
+
+        <li>{{ user.pays.name }}</li>
+    {% endif %}
+    <li>{{ user.firstname }}</li>
+    <li>{{ user.lastname }}</li>
+    <li>{{ user.birthdate|date('d/m/Y') }}</li>
+    <li>
+        {% if user.roles|length == 0 %}
+            No role
+        {% else %}
+            {% for role in user.roles %}
+                {{ role }}
+            {% endfor %}
+        {% endif %}
+    </li>
+
+</ul>
+
+

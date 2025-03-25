@@ -1,0 +1,20 @@
+
+
+{#— déconnexion#}
+{#9. il ne peut en être autrement#}
+{#10— aller à la page d’accueil#}
+{#— gérer le profil#}
+{#— lister les produits#}
+{#— gérer le panier#}
+{% include 'User/view.html.twig' %}
+
+
+    <h2>Espace client</h2>
+    <ul>
+        <li><a href="{{ path('security_logout') }}">Déconnexion</a></li>
+        <li><a href="{{ path('home_index') }}">Aller a la page d'accueil</a></li>
+        <li><a href="{{ path('user_edit') }}">Gérer le profil (Edit / Modifier)</a></li>
+        <li><a href="{#{{ path('list_produit') }}#}">Lister les produits</a></li>
+        <li><a href="{#{{ path('gerer_panir') }}#}">Gérer le panier</a></li>
+
+    </ul>

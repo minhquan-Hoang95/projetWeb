@@ -1,0 +1,20 @@
+{# Affichage des messages de flash #}
+
+{% if app.session.flashBag.has('info') %}
+    <strong>Messages d'information</strong>
+    <ul>
+        {% for msg in app.session.flashBag.get('info') %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+{% if app.session.flashBag.has('error') %}
+    <strong>Messages d'erreur</strong>
+    <ul>
+        {% for msg in app.session.flashBag.get('error') %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

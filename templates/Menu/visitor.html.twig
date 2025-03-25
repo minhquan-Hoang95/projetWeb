@@ -1,0 +1,10 @@
+
+{#  Affichage la menu pour les visiteurs #}
+    <h4>Vous n'êtes pas/plus authentifié</h4>
+    <p>Vous devez vous authentifier pour accéder à cette page</p>
+
+    <ul>
+        <li><a href="{{ path('security_login') }}">Se connecter</a></li>
+        <li><a href="{{ path('user_adduser') }}">Créer un compte</a></li>
+        <li><a href="{{ path('home_index') }}" >Page d'accueil</a></li>
+    </ul>

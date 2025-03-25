@@ -1,0 +1,50 @@
+{% extends 'Layouts/layout_vente.html.twig'%}
+
+{% block title %}{{ parent() }} : utilisateur{% endblock %}
+
+{% block titre_principal %}Utilisateur{% endblock %}
+
+{% block vue %}
+    {% if users|length == 0 %}
+        <p>There is no users in the database</p>
+    {% else %}
+        <table>
+            <tr>
+                <th>Login</th>
+                <th>Name</th>
+                <th>Firstname</th>
+                <th>BirthDate</th>
+                <th>Role</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.login }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.firstname }}</td>
+                    {% if user.pays is null %}
+                        <td> No country in the database</td>
+                    {% else %}
+
+                        <td>{{ user.pays.name }}</td>
+                    {% endif %}
+                    <td>{{ user.birthdate|date('d/m/Y') }}</td>
+                    <td>
+                        {% if user.roles|length == 0 %}
+                            No role
+                        {% else %}
+                            {% for role in user.roles %}
+                                {{ role }}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
+    {% endif %}
+
+    {{ dump(users) }}
+
+{% endblock %}
+

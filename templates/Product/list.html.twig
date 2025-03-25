@@ -1,0 +1,30 @@
+{% extends 'Layouts/layout_vente.html.twig' %}
+{% block title %}
+    {{ parent() }} Lister les produits en magasin
+{% endblock %}
+
+{% block titre_principal %}
+    {{ parent() }} Lister produits en magasin
+{% endblock %}
+
+{% block vue %}
+    {% if products|length is null %}
+        <p>Il y a aucun produit dans la base de données</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Libellé</th>
+            <th>Prix</th>
+            <th>Stock</th>
+            <th>Choix</th>
+            <th>Action</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.libelle }}</td>
+            <td>{{ product.unitPrice }}</td>
+            <td>{{ product.quantityInStock }}</td>
+        </tr>
+
+    </table>
+{% endblock %}

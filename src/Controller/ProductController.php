@@ -42,8 +42,6 @@ final class ProductController extends AbstractController
 
         $panierRepository = $em->getRepository(Panier::class);
 
-
-
         $forms = [];
 
         foreach ($products as $product) {
@@ -59,17 +57,34 @@ final class ProductController extends AbstractController
                     ]
                 ]); // create form for each product with quantity in stock as choices
            $forms[$product->getId()] = $form->createView(); // add form to array with product id as key
+
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $nbChoix = $form->get('choix')->getData();
+
+                $panier->setProduct($product);
+                $panier->setUser($user);
+                if($panier->getDesireQuantity() + $nbChoix > $product->getQuantityInStock())
+                {
+                    $this->addFlash('info', 'Quantité insuffisante');
+                    return $this->redirectToRoute('product_list');
+                }
+                if($panier->getDesireQuantity() + $nbChoix >= 0 && $product->getQuantityInStock() - $nbChoix)
+                {
+                    $panier->setDesireQuantity($panier->getDesireQuantity() + $nbChoix);
+                    $product->setQuantityInStock($product->getQuantityInStock() - $nbChoix);
+                }
+                $em->persist($panier);
+                $em->persist($product);
+                $em->flush();
+                $this->addFlash('info', 'Commande effectuée');
+                return $this->redirectToRoute('product_list');
+            }
         }
 
-        if($form->isSubmitted() && $form->isValid())
-        {
-           // $data = $form->getData();
 
-            //$em->persist($data);*/
-            $em->flush();
-            $this->addFlash('info', 'Commande effectuée');
-            return $this->redirectToRoute('product_list');
-        }
 
         if($form->isSubmitted())
         {
@@ -81,17 +96,8 @@ final class ProductController extends AbstractController
             'myforms' => $forms
         );
         return $this->render('Product/list.html.twig', $args);
-
     }
 
-
-  /*  #[Route('/commander', name: '_commander')]
-    public function updatePanier(Request $request, EntityManagerInterface $em, Panier $panier): Response
-    {
-        // When I click on "commander" button, I want to update the quantity of the product in the panier
-        // And I want to update the quantity in stock of the product
-        // And I want to update the total price of the panier
-    }*/
   #[Route('/displayPanier', name: '_displayPanier')]
     public function displayPanierAction(EntityManagerInterface $em, Request $request): Response
     {

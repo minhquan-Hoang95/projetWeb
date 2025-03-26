@@ -28,7 +28,7 @@
 {#
                 {{ form_start(myforms[product.id]), {'action' : path('product_commander', {'product' : product.id})} }}
 #}
-                {{ form_start(myforms[product.id]) }}
+                {{ form_start(myforms[product.id])}}
             <td>
                     {{ form_widget(myforms[product.id].choix) }}
             </td>
@@ -44,4 +44,6 @@
 
     </table>
     {% endif %}
+
+    {{ dump(myforms) }}
 {% endblock %}

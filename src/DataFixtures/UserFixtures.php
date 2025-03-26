@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Panier;
 use App\Entity\Pays;
 use App\Entity\Product;
 use App\Entity\User;
@@ -145,40 +146,40 @@ class UserFixtures extends Fixture
         $product1 = new Product();
         $product1
             ->setLibelle('Box Thailande')
-            ->setUnitPrice(27.00)
-            ->setQuantityInStock(100)
+            ->setUnitPrice(27.95)
+            ->setQuantityInStock(20)
             ;
         $em->persist($product1);
 
         $product2 = new Product();
         $product2
             ->setLibelle('Box Japon')
-            ->setUnitPrice(30.00)
-            ->setQuantityInStock(100)
+            ->setUnitPrice(98.65)
+            ->setQuantityInStock(15)
             ;
         $em->persist($product2);
 
         $product3 = new Product();
         $product3
             ->setLibelle('Box Chine')
-            ->setUnitPrice(25.00)
-            ->setQuantityInStock(100)
+            ->setUnitPrice(25.34)
+            ->setQuantityInStock(10)
             ;
         $em->persist($product3);
 
         $product4 = new Product();
         $product4
             ->setLibelle('Box Inde')
-            ->setUnitPrice(20.00)
-            ->setQuantityInStock(100)
+            ->setUnitPrice(20.43)
+            ->setQuantityInStock(0)
             ;
         $em->persist($product4);
 
         $product5 = new Product();
         $product5
             ->setLibelle('Box Vietnam')
-            ->setUnitPrice(22.00)
-            ->setQuantityInStock(100)
+            ->setUnitPrice(199.99)
+            ->setQuantityInStock(9)
             ;
         $em->persist($product5);
 
@@ -215,7 +216,30 @@ class UserFixtures extends Fixture
         $pay7->addProduct($product2);
         $pay7->addProduct($product5);
 
+        /**
+         * Panier
+         */
+        $panier31 = new Panier();
+        $panier31
+            ->setUser($user3)
+            ->setProduct($product1)
+            ->setDesireQuantity(2)
+            ;
+        $user3->addPanier($panier31);
+        $product1->addPanier($panier31);
 
+        $em->persist($panier31);
+
+        $panier32 = new Panier();
+        $panier32
+            ->setUser($user3)
+            ->setProduct($product2)
+            ->setDesireQuantity(3)
+            ;
+        $user3->addPanier($panier32);
+        $product2->addPanier($panier32);
+
+        $em->persist($panier32);
 
 
         $em->flush();

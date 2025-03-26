@@ -67,12 +67,12 @@ class Product
         return $this;
     }
 
-    public function getUnitPrice(): ?int
+    public function getUnitPrice(): ?float
     {
         return $this->unitPrice;
     }
 
-    public function setUnitPrice(int $unitPrice): static
+    public function setUnitPrice(float $unitPrice): static
     {
         $this->unitPrice = $unitPrice;
 

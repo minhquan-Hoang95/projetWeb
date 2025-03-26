@@ -1,15 +1,15 @@
 {% extends 'Layouts/layout_vente.html.twig' %}
-{% block title %}
+{#{% block title %}
     {{ parent() }} Lister les produits en magasin
 {% endblock %}
 
 {% block titre_principal %}
     {{ parent() }} Lister produits en magasin
-{% endblock %}
+{% endblock %}#}
 
 {% block vue %}
     {% if products|length is null %}
-        <p>Il y a aucun produit dans la base de données</p>
+        <p>Il n'y a aucun produit dans la base de données</p>
     {% else %}
     <table>
         <tr>
@@ -24,7 +24,24 @@
             <td>{{ product.libelle }}</td>
             <td>{{ product.unitPrice }}</td>
             <td>{{ product.quantityInStock }}</td>
+            {% if product.quantityInStock > 0 %}
+{#
+                {{ form_start(myforms[product.id]), {'action' : path('product_commander', {'product' : product.id})} }}
+#}
+                {{ form_start(myforms[product.id]) }}
+            <td>
+                    {{ form_widget(myforms[product.id].choix) }}
+            </td>
+            <td>
+                    {{ form_widget(myforms[product.id].action) }}
+            </td>
+            {{ form_end(myforms[product.id]) }}
+            {% endif %}
+
+
         </tr>
+        {% endfor %}
 
     </table>
+    {% endif %}
 {% endblock %}

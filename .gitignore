@@ -9,4 +9,4 @@
 /vendor/
 ###< symfony/framework-bundle ###
 .idea
-/dbvente
+/bd_commerce

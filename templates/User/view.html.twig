@@ -14,11 +14,13 @@
             No role
         {% else %}
             {% for role in user.roles %}
-                {{ role }}
+                {% if role != 'ROLE_NOROLE' %}
+                    {{ role }}
+                {% endif %}
             {% endfor %}
         {% endif %}
     </li>
-
 </ul>
+
 
 

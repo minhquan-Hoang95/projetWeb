@@ -8,6 +8,7 @@ use App\Form\CommandType;
 use App\Form\PanierType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,8 +30,6 @@ final class ProductController extends AbstractController
     }
 
     #[Route('/list', name: '_list',
-    requirements: ['page' => '[1-9)]\d*'],
-        defaults: ['page' => 0],
     )]
     public function listAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -45,46 +44,55 @@ final class ProductController extends AbstractController
         $forms = [];
 
         foreach ($products as $product) {
-            $panier = $panierRepository->findOneBy(['user' => $user, 'product' => $product]);
-            // if panier is empty, create a new one
-            if(is_null($panier)) {
-                $panier = new Panier();
-            }
+            $panier = $panierRepository->findOneBy(['user' => $user, 'product' => $product]); // find panier for user and product
+
             $form = $this->createForm(CommandType::class, null,
                 ['data' =>
                     ['quantityInStock' => $product->getQuantityInStock(),
-                        'quantityInPanier' => $panier->getDesireQuantity(),
+                        'quantityInPanier' => $panier ? $panier->getDesireQuantity() : 0,
+                        'product' => $product,
                     ]
                 ]); // create form for each product with quantity in stock as choices
-           $forms[$product->getId()] = $form->createView(); // add form to array with product id as key
 
             $form->handleRequest($request);
+            $forms[$product->getId()] = $form->createView(); // add form to array with product id as key
 
             if($form->isSubmitted() && $form->isValid())
             {
                 $nbChoix = $form->get('choix')->getData();
+                $productId = $form->get('product')->getData();
+                $product = $productRepository->find($productId);
 
-                $panier->setProduct($product);
-                $panier->setUser($user);
-                if($panier->getDesireQuantity() + $nbChoix > $product->getQuantityInStock())
+                if($product)
                 {
-                    $this->addFlash('info', 'Quantité insuffisante');
-                    return $this->redirectToRoute('product_list');
-                }
-                if($panier->getDesireQuantity() + $nbChoix >= 0 && $product->getQuantityInStock() - $nbChoix)
-                {
-                    $panier->setDesireQuantity($panier->getDesireQuantity() + $nbChoix);
+                    $panier = $panierRepository->findOneBy(['user' => $user, 'product' => $product]);
+                    if($panier)
+                    {
+                        $panier->setDesireQuantity($panier->getDesireQuantity() + $nbChoix);
+                    }
+                    else
+                    {
+                        $panier = new Panier();
+                        $panier->setUser($user);
+                        $panier->setProduct($product);
+                        $panier->setDesireQuantity($nbChoix);
+                    }
+
                     $product->setQuantityInStock($product->getQuantityInStock() - $nbChoix);
+                    $em->persist($panier);
+                    $em->persist($product);
+                    $em->flush();
                 }
-                $em->persist($panier);
-                $em->persist($product);
-                $em->flush();
-                $this->addFlash('info', 'Commande effectuée');
+                else
+                {
+                    throw new NotFoundHttpException('Produit non trouvé');
+                }
+
+                $this->addFlash('info', 'Produit ajouté au panier');
                 return $this->redirectToRoute('product_list');
             }
+
         }
-
-
 
         if($form->isSubmitted())
         {

@@ -25,7 +25,7 @@ class UserType extends AbstractType
                     TextType::class,
                     [
                         'label' => 'Login ',])
-                /*->add('roles',
+                ->add('roles',
                 ChoiceType::class,
                     [
                         'label' => 'Roles',
@@ -37,7 +37,7 @@ class UserType extends AbstractType
                         ],
                         'multiple' => true, // choix multiple possible
                         'expanded' => true,
-                    ])*/
+                    ])
                 ->add('password',
                     PasswordType::class,
                     [

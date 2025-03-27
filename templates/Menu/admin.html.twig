@@ -1,9 +1,14 @@
+{#
 {% include 'User/view.html.twig' %}
-<p>Admin page</p>
-    <p><a href="{{ path('security_logout') }}">Se déconnecter</a></p>
-    <p><a href="{#{{ path('gerer_client') }}#}">gérer les clients</a></p>
-    <p><a href="{#{{ path('creer_produit') }}#}" >créer un produit</a></p>
-    <p><a href="{#{{ path('aller_exterieur') }}#}">vers un site extérieur</a></p>
+#}
+    <h2>Admin page</h2>
+    {% include 'Menu/client.html.twig' %}
+        <h3>Espace Admin</h3>
+     <ul>
+         <li><a href="{{ path('admin_editUser') }}">Gérer les clients</a></li>
+         <li><a href="{{ path('admin_addProduct') }}" >Créer un produit</a></li>
+         <li><a href="https://fr.wikipedia.org/wiki/Pong">Vers un site extérieur</a></li>
+     </ul>
 
 
 

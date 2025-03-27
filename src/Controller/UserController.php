@@ -65,7 +65,7 @@ final class UserController extends AbstractController
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
 
-            $user->setRoles(['ROLE_CLIENT']);
+            //$user->setRoles(['ROLE_CLIENT']);
 
 
             $em->persist($user); // persist() tells Doctrine to "manage" the entity

@@ -34,7 +34,7 @@
                         <td>{{ totalPrice}}</td>
                         <td>
 
-                            <a href="{#{{ path('panier_remove', {'id': panier.product.id}) }}#}">Remove</a>
+                            <a href="{{ path('product_deletePanier', {'id': panier.product.id}) }}">Supprimer</a>
 
                         </td>
                     </tr>

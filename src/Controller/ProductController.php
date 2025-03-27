@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/product', name: 'product')]
 final class ProductController extends AbstractController
@@ -31,6 +32,7 @@ final class ProductController extends AbstractController
 
     #[Route('/list', name: '_list',
     )]
+    #[IsGranted('ROLE_CLIENT')]
     public function listAction(EntityManagerInterface $em, Request $request): Response
     {
         //$panier = new Panier();
@@ -73,9 +75,13 @@ final class ProductController extends AbstractController
                     else
                     {
                         $panier = new Panier();
-                        $panier->setUser($user);
-                        $panier->setProduct($product);
-                        $panier->setDesireQuantity($nbChoix);
+
+                        $panier
+                           /* ->setUser($user)
+                            ->setProduct($product)*/
+                            ->setDesireQuantity($nbChoix);
+                        $user->addPanier($panier);
+                        $product->addPanier($panier);
                     }
 
                     $product->setQuantityInStock($product->getQuantityInStock() - $nbChoix);
@@ -83,11 +89,6 @@ final class ProductController extends AbstractController
                     $em->persist($product);
                     $em->flush();
                 }
-                else
-                {
-                    throw new NotFoundHttpException('Produit non trouvé');
-                }
-
                 $this->addFlash('info', 'Produit ajouté au panier');
                 return $this->redirectToRoute('product_list');
             }
@@ -106,28 +107,9 @@ final class ProductController extends AbstractController
         return $this->render('Product/list.html.twig', $args);
     }
 
-  #[Route('/displayPanier', name: '_displayPanier')]
-    public function displayPanierAction(EntityManagerInterface $em, Request $request): Response
-    {
-        $user = $this->getUser();
-        $panierRepository = $em->getRepository(Panier::class);
 
-        $paniers = $panierRepository->findBy(['user' => $user]);
 
-        //$productRepository = $em->getRepository(Product::class);
-       // $products = $productRepository->findAll();
 
-        /*foreach ($products as $product) {
-            $panier = $panierRepository->findOneBy(['user' => $user, 'product' => $product]);
-
-        }*/
-
-        $args = array(
-            'paniers' => $paniers,
-        );
-
-        return $this->render('Product/display_panier.html.twig', $args);
-    }
 
 
 

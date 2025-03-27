@@ -1,0 +1,64 @@
+{% extends 'Layouts/layout_vente.html.twig' %}
+
+{% block title %}
+    {{ parent() }} : Panier de moi
+{% endblock %}
+
+{% block titre_principal %}
+
+{% endblock %}
+
+{% block vue %}
+    {% set totalQuantity = 0 %}
+    {% set total = 0 %}
+<table>
+    <tr>
+        <th>Libelle</th>
+        <th>Unit price </th>
+        <th>Quantity</th>
+        <th>Total price</th>
+        <th>Action</th>
+    </tr>
+
+    {% if paniers|length is null %}
+        <p>Panier is vide</p>
+    {% else %}
+        {% for panier in paniers %}
+            {% set totalQuantity =  totalQuantity + panier.desireQuantity %}
+            {% set totalPrice = (panier.product.unitPrice * panier.desireQuantity) %}
+            {% set total = total + totalPrice %}
+            <tr>
+                <td>{{ panier.product.libelle }}</td>
+                <td>{{ panier.product.unitPrice }}</td>
+                <td>{{ panier.desireQuantity }}</td>
+                <td>{{ totalPrice}}</td>
+                <td>
+
+                    <a href="{{ path('panier_delete', {'id': panier.product.id}) }}">Supprimer</a>
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        <tr>
+            <td colspan="2">Total</td>
+            <td>{{ totalQuantity }}</td>
+            <td>{{ total }}</td>
+        </tr>
+    {% endif %}
+
+
+    <tr>
+        <td colspan="3"></td>
+        <td><a href="{{ path('panier_order') }}">Acheter</a></td>
+        <td>
+            <a href="{{ path('panier_clear') }}">Vider</a>
+        </td>
+    </tr>
+
+
+</table>
+
+{{ dump(paniers) }}
+
+{% endblock %}

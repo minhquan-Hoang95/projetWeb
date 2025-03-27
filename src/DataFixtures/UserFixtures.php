@@ -20,6 +20,10 @@ class UserFixtures extends Fixture
     }
     public function load(ObjectManager $em): void
     {
+        /**
+         * Panier
+         */
+
         // Create a user
         $user1 = new User();
         $user1
@@ -68,6 +72,8 @@ class UserFixtures extends Fixture
         $hashedPassword = $this->passwordHasher->hashPassword($user4, 'eneidemuob');
         $user4->setPassword($hashedPassword);
         $em->persist($user4);
+
+
 
 
         // Pays
@@ -183,7 +189,49 @@ class UserFixtures extends Fixture
             ;
         $em->persist($product5);
 
-        // add pays to product
+        /**
+         * Panier
+         */
+
+        $panier31 = new Panier();
+        $panier31
+            ->setDesireQuantity(2)
+        ;
+        $user3->addPanier($panier31);
+        $product1->addPanier($panier31);
+
+        $em->persist($panier31);
+
+        $panier32 = new Panier();
+        $panier32
+            ->setDesireQuantity(3)
+        ;
+        $user3->addPanier($panier32);
+        $product2->addPanier($panier32);
+
+        $em->persist($panier32);
+
+        $panier43 = new Panier();
+        $panier43
+            ->setDesireQuantity(1);
+        $user4->addPanier($panier43);
+        $product3->addPanier($panier43);
+
+        $em->persist($panier43);
+
+        $panier44 = new Panier();
+        $panier44
+            ->setDesireQuantity(2);
+        $user4->addPanier($panier44);
+        $product4->addPanier($panier44);
+
+        $em->persist($panier44);
+
+
+
+        /**
+         * Add products to pays
+         */
 
         $pays1->addProduct($product1);
         $pays1->addProduct($product2);
@@ -216,30 +264,7 @@ class UserFixtures extends Fixture
         $pay7->addProduct($product2);
         $pay7->addProduct($product5);
 
-        /**
-         * Panier
-         */
-        $panier31 = new Panier();
-        $panier31
-            ->setUser($user3)
-            ->setProduct($product1)
-            ->setDesireQuantity(2)
-            ;
-        $user3->addPanier($panier31);
-        $product1->addPanier($panier31);
 
-        $em->persist($panier31);
-
-        $panier32 = new Panier();
-        $panier32
-            ->setUser($user3)
-            ->setProduct($product2)
-            ->setDesireQuantity(3)
-            ;
-        $user3->addPanier($panier32);
-        $product2->addPanier($panier32);
-
-        $em->persist($panier32);
 
 
         $em->flush();

@@ -77,11 +77,11 @@ final class ProductController extends AbstractController
                         $panier = new Panier();
 
                         $panier
-                           /* ->setUser($user)
-                            ->setProduct($product)*/
+                           ->setUser($this->getUser())
+                            ->setProduct($product)
                             ->setDesireQuantity($nbChoix);
-                        $user->addPanier($panier);
-                        $product->addPanier($panier);
+                        //$user->addPanier($panier);
+                        //$product->addPanier($panier);
                     }
 
                     $product->setQuantityInStock($product->getQuantityInStock() - $nbChoix);

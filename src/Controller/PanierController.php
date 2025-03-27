@@ -51,22 +51,31 @@ final class PanierController extends AbstractController
         name: '_delete',
         requirements: ['id' => '[1-9]\d*']
     )]
-    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]
+    //#[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]
     public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
+        $productRepository = $em->getRepository(Product::class);
+        $product = $productRepository->find($id);
+
+        if (is_null($product)) {
+            throw $this->createNotFoundException('Produit ' . $id . ' inexistant');
+        }
+
         $panierRepository = $em->getRepository(Panier::class);
-        $panier = $panierRepository->find($this->getUser());
+        $panier = $panierRepository->findOneBy(['user' => $this->getUser(), 'product' => $product]);
 
         if (is_null($panier)) {
-            throw new NotFoundHttpException('Panier ' . $id . ' inexistant');
+            throw $this->createNotFoundException('Panier inexistant');
         }
+
+        $product->removePanier($panier);
+        $product->setQuantityInStock($product->getQuantityInStock() + $panier->getDesireQuantity());
 
         $em->remove($panier);
         $em->flush();
 
         return $this->redirectToRoute('panier_view');
     }
-
     #[Route('/clear', name: '_clear')]
     public function clearAction(EntityManagerInterface $em): Response
     {
@@ -74,12 +83,14 @@ final class PanierController extends AbstractController
         $panierRepository = $em->getRepository(Panier::class);
         $paniers = $panierRepository->findBy(['user' => $user]);
 
+        $productRepository = $em->getRepository(Product::class);
 
         foreach ($paniers as $panier) {
-            $em->remove($panier);
+            $product = $productRepository->find($panier->getProduct());
+            $this->deleteAction($product->getId(), $em);
+
         }
 
-        $em->flush();
 
         return $this->redirectToRoute('panier_view');
     }

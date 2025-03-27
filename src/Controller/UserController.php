@@ -71,7 +71,7 @@ final class UserController extends AbstractController
             $em->persist($user); // persist() tells Doctrine to "manage" the entity
             $em->flush(); // flush() tells Doctrine to save the entity to the database
             $this->addFlash('info', 'Ajouter user réussi'); // addFlash() adds a flash message to the session
-            return $this->redirectToRoute('user_display'); // redirectToRoute() generates a URL and redirects to it
+            return $this->redirectToRoute('home_index'); // redirectToRoute() generates a URL and redirects to it
         }
         // if the form is submitted but not valid, add a flash message
         if($form->isSubmitted())

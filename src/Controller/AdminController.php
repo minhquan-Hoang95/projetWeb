@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Pays;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ProductType;
@@ -76,7 +77,6 @@ final class AdminController extends AbstractController
             $this->addFlash('info', 'Produit ajouté');
             return  $this->redirectToRoute('home_index');
         }
-
         if($form->isSubmitted())
         {
             $this->addFlash('info', 'Formulaire incorrect');

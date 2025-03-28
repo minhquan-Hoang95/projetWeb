@@ -1,0 +1,17 @@
+{% extends 'Layouts/layout_vente.html.twig' %}
+
+{% block title %}
+    {{ parent() }} User Ajout
+{% endblock %}
+
+{% block titre_principal %}
+    {{ parent() }} User Ajout
+{% endblock %}
+
+{% block vue %}
+    <h2>Ajout d'un User</h2>
+
+    {{ form(myform) }}
+
+{% endblock %}
+

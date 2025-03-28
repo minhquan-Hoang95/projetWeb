@@ -35,7 +35,7 @@ class ProductType extends AbstractType
                 'label' => 'Quantite en stock',
                 'attr' => ['placeholder' => 'quantite en stock']
             ])
-           /* ->add('pays',
+           /*->add('pays',
                 EntityType::class,
                 [
                     'class' => Pays::class,

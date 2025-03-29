@@ -42,7 +42,9 @@ security:
         - { path: ^/security/login$, roles: PUBLIC_ACCESS } # Allow access to the login page
         - { path: ^/superadmin, roles: ROLE_SUPER_ADMIN } # Allow access to the superadmin page
         - { path: ^/admin, roles: ROLE_ADMIN } # Allow access to the admin page
-        - { path: ^/client, roles: [ROLE_CLIENT, ROLE_ADMIN] } # Allow access to the client page
+        - { path: ^/user, roles: [ROLE_CLIENT, ROLE_ADMIN] } # Allow access to the client page
+        - {path: ^/panier, roles: [ROLE_CLIENT, ROLE_ADMIN]} # Allow access to the profile page
+        - { path: ^/ , roles : IS_AUTHENTICATED_FULLY } #
 
 when@test:
     security:

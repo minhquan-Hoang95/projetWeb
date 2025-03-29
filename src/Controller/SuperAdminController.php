@@ -16,6 +16,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/superadmin', name: 'superadmin')]
 final class SuperAdminController extends AbstractController
 {
+    #[Route('/', name: '_index')]
+    public function indexAction(EntityManagerInterface $em) : Response
+    {
+        $users = $em->getRepository(User::class)->findAll();
+        return $this->render('SuperAdmin/index.html.twig', ['users' => $users]);
+    }
     #[Route('/addAdmin', name: '_addAdmin')]
     public function addAdminAction(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher) : Response
     {

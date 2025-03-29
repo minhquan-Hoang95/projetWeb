@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class PanierController extends AbstractController
 {
     #[Route('/', name: '_list')]
+/*    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]*/
     public function listAction(EntityManagerInterface $em): Response
     {
         $panierRepository = $em->getRepository(Panier::class);
@@ -30,6 +31,8 @@ final class PanierController extends AbstractController
     }
 
     #[Route('/view', name: '_view',)]  /*requirements: ['id' => '[1-9]\d*']*/
+/*    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]*/
+
     public function viewAction(EntityManagerInterface $em): Response
     {
         $panierRepository = $em->getRepository(Panier::class);
@@ -51,7 +54,7 @@ final class PanierController extends AbstractController
         name: '_delete',
         requirements: ['id' => '[1-9]\d*']
     )]
-    //#[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]
+/*    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]*/
     public function deleteAction(int $id, EntityManagerInterface $em): Response
     {
         $productRepository = $em->getRepository(Product::class);
@@ -77,6 +80,8 @@ final class PanierController extends AbstractController
         return $this->redirectToRoute('panier_view');
     }
     #[Route('/clear', name: '_clear')]
+/*    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]*/
+
     public function clearAction(EntityManagerInterface $em): Response
     {
         $user = $this->getUser(); // get current user from security context
@@ -96,6 +101,8 @@ final class PanierController extends AbstractController
     }
 
     #[Route('order', name: '_order')]
+/*    #[IsGranted(new Expression('is_granted(\'ROLE_ADMIN\') or is_granted("ROLE_CLIENT")'))]*/
+
     public function orderAction(EntityManagerInterface $em): Response
     {
         $panierRepository = $em->getRepository(Panier::class);

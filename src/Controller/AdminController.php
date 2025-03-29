@@ -53,7 +53,6 @@ final class AdminController extends AbstractController
             return $this->redirectToRoute('admin_editUser');
         }
 
-
         $em->remove($user);
 
         $em->flush();

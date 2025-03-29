@@ -4,8 +4,12 @@
 
 
 {% block css %}
-    {{ parent() }}
+    {#{{ parent() }}#}
+    <link rel="stylesheet" href="{{ asset('css/default.css') }}">
+
+{#
     <link rel="stylesheet" media="screen" type="text/css" title="default" href="{{ asset('css/default.css') }}">
+#}
 {% endblock %}
 
 {% block javascript %}
@@ -35,6 +39,9 @@
         {% endblock %}
     </div>
     <div id="footer">
+        <p>Je suis la</p>
+{#
         {% include 'Layouts/footer.html.twig' %}
+#}
     </div>
 {% endblock %}

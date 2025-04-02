@@ -39,12 +39,13 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/$, roles: PUBLIC_ACCESS } # Allow access to the home page
+        - { path: ^/user/adduser, roles: PUBLIC_ACCESS } # Allow access to the client page
         - { path: ^/security/login$, roles: PUBLIC_ACCESS } # Allow access to the login page
         - { path: ^/superadmin, roles: ROLE_SUPER_ADMIN } # Allow access to the superadmin page
         - { path: ^/admin, roles: ROLE_ADMIN } # Allow access to the admin page
         - { path: ^/user, roles: [ROLE_CLIENT, ROLE_ADMIN] } # Allow access to the client page
         - {path: ^/panier, roles: [ROLE_CLIENT, ROLE_ADMIN]} # Allow access to the profile page
-        - { path: ^/ , roles : IS_AUTHENTICATED_FULLY } #
+        #- { path: ^/ , roles : IS_AUTHENTICATED_FULLY } #
 
 when@test:
     security:

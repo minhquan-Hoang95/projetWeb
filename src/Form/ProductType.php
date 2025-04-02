@@ -36,17 +36,19 @@ class ProductType extends AbstractType
                 'attr' => ['placeholder' => 'quantite en stock']
             ])
            /*->add('pays',
+           /*->add('pays',
                 EntityType::class,
                 [
                     'class' => Pays::class,
                     'label' => 'Pays',
-                    'choice_label' => function (Pays $pays) {
+                    'choice_label' => 'name' /*function (Pays $pays) {
                         return
                             $pays->getName()
                             . '('
                             . (is_null($pays->getCode()) ? '???' : $pays->getCode())
                             .')';
-                    },
+                    }
+
                     'placeholder' => 'Choisissez un pays',
                     'expanded' => false, // une liste déroulante
 

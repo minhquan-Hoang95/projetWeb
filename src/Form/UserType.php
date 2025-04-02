@@ -78,7 +78,7 @@ class UserType extends AbstractType
                 CountryType::class,
                 [
                     'label' => 'Pays',
-                    'preferred_choices' => ['FR', 'BE', 'CH', 'DE', 'IT', 'ES', 'GB', 'US'],
+                    //'preferred_choices' => ['FR', 'BE', 'CH', 'DE', 'IT', 'ES', 'GB', 'US'],
                 ])*/
             ;
     }

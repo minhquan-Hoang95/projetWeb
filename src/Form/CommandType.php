@@ -31,12 +31,14 @@ class CommandType extends AbstractType
                 'expanded' => false,
                 'data' => 0,
             ])
-            ->add('product', HiddenType::class, [
-                'data' => $product->getId(),
-            ])
+
            ->add('action', SubmitType::class,
             [
                 'label' => 'Commander',
+            ])
+
+            ->add('product', HiddenType::class, [
+                'data' => $product->getId(),
             ])
 
         ;

@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block vue %}
+    <h1>Panier</h1>
     {% set totalQuantity = 0 %}
     {% set total = 0 %}
         <table>
@@ -34,7 +35,7 @@
                         <td>{{ totalPrice}}</td>
                         <td>
 
-                            <a href="{{ path('product_deletePanier', {'id': panier.product.id}) }}">Supprimer</a>
+                            <a href="{{ path('panier_delete', {'id': panier.product.id}) }}">Supprimer</a>
 
                         </td>
                     </tr>
@@ -55,7 +56,6 @@
                         <a href="">Vider</a>
                     </td>
                 </tr>
-
 
         </table>
 

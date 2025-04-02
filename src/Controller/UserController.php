@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\CountService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\Translation\t;
 
 #[Route('/user', name: 'user')]
@@ -30,24 +32,12 @@ final class UserController extends AbstractController
         return $this->render('User/display.html.twig', $args);
     }
 
-    #[Route('/view/{login}', name: '_view_user')]
-    public function viewUserAction(EntityManagerInterface $em, string $login): Response
+    #[Route('/view', name: '_view_user')]
+    public function viewUserAction(): Response
     {
+       $user = $this->getUser();
 
-        $userRepository = $em->getRepository(User::class);
-        $user = $userRepository->findOneBy(['login' => $login]);
-
-        if(is_null($user))
-        {
-            $this->addFlash('info', 'Utilisateur avec login : ' . $login . ' non trouvé');
-            return $this->redirectToRoute('user');
-        }
-
-        $args = array(
-            'user' => $user,
-        );
-
-        return $this->render('User/view.html.twig',$args );
+        return $this->render('User/view.html.twig');
     }
 
     #[Route('/adduser', name: '_adduser')]
@@ -100,8 +90,6 @@ final class UserController extends AbstractController
         $form->add('submit', SubmitType::class, ['label' => 'Edit user']); // add a submit button to the form
         $form->handleRequest($request); // handleRequest() processes the form submission
 
-
-
         // if the form is submitted and valid, update the user in the database
         if($form->isSubmitted() && $form->isValid())
         {
@@ -113,7 +101,7 @@ final class UserController extends AbstractController
             // si c'est superadmin => redirection vers la page d'accueil // TODO
             // sinon redirection vers la page de profil ou lister les produits // TODO
             $this->addFlash('info', 'Edition user réussie'); // addFlash() adds a flash message to the session
-            return $this->redirectToRoute('user'); // redirectToRoute() generates a URL and redirects to it
+            return $this->redirectToRoute('home_index'); // redirectToRoute() generates a URL and redirects to it
         }
         // if the form is submitted but not valid, add a flash message
         if($form->isSubmitted())

@@ -6,6 +6,13 @@
 parameters:
 
 services:
+    App\Service\CountService:
+        arguments :
+           $entityManager: '@doctrine.orm.entity_manager'
+            #$repository: '@App\Repository\CountRepository'
+        # these are your own services
+        # configure them in src/Service/YourService.php
+        # and use them in your controllers
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

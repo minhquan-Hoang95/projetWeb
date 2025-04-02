@@ -11,6 +11,7 @@
 {% block vue %}
     {% set totalQuantity = 0 %}
     {% set total = 0 %}
+
 <table>
     <tr>
         <th>Libelle</th>
@@ -19,14 +20,16 @@
         <th>Total price</th>
         <th>Action</th>
     </tr>
-
-    {% if paniers|length is null %}
+    {% if paniers|length == 0 %}
         <p>Panier is vide</p>
     {% else %}
         {% for panier in paniers %}
             {% set totalQuantity =  totalQuantity + panier.desireQuantity %}
             {% set totalPrice = (panier.product.unitPrice * panier.desireQuantity) %}
             {% set total = total + totalPrice %}
+            {% if total == 0 %}
+                <p>Panier is vide</p>
+            {% else %}
             <tr>
                 <td>{{ panier.product.libelle }}</td>
                 <td>{{ panier.product.unitPrice }}</td>
@@ -38,6 +41,7 @@
 
                 </td>
             </tr>
+            {% endif %}
 
         {% endfor %}
         <tr>

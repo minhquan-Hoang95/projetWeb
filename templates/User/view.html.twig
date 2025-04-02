@@ -1,19 +1,19 @@
 
+<h1>Bienvenue {{ app.user.firstname }} {{ app.user.lastname }}</h1>
 <ul>
-    {% if user.pays is null %}
+    {% if app.user.pays is null %}
         <li> No country in the database</li>
     {% else %}
-
-        <li>{{ user.pays.name }}</li>
+        <li>{{ app.user.pays.name }}</li>
     {% endif %}
-    <li>{{ user.firstname }}</li>
-    <li>{{ user.lastname }}</li>
-    <li>{{ user.birthdate|date('d/m/Y') }}</li>
+    <li>{{ app.user.firstname }}</li>
+    <li>{{ app.user.lastname }}</li>
+    <li>{{ app.user.birthdate|date('d/m/Y') }}</li>
     <li>
-        {% if user.roles|length == 0 %}
+        {% if app.user.roles|length == 0 %}
             No role
         {% else %}
-            {% for role in user.roles %}
+            {% for role in app.user.roles %}
                 {% if role != 'ROLE_NOROLE' %}
                     {{ role }}
                 {% endif %}

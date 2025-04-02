@@ -1,13 +1,14 @@
-{#
-{% include 'User/view.html.twig' %}
-#}
+
     <h2>Admin page</h2>
-    {% include 'Menu/client.html.twig' %}
-        <h3>Espace Admin</h3>
+    {% include 'Menu/client.html.twig'  %}
+        <h2>Espace Admin</h2>
      <ul>
          <li><a href="{{ path('admin_editUser') }}">Gérer les clients</a></li>
          <li><a href="{{ path('admin_addProduct') }}" >Créer un produit</a></li>
          <li><a href="https://fr.wikipedia.org/wiki/Pong">Vers un site extérieur</a></li>
+{#
+         <li> <a href="{{ path('panier_list') }}">Lister le panier en tant Admin</a></li>
+#}
      </ul>
 
 

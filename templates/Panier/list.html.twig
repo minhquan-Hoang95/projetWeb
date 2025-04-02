@@ -7,10 +7,13 @@
 {% block titre_principal %}
     {{ parent() }} : Panier
 {% endblock %}
-
 {% block vue %}
     {% set totalQuantity = 0 %}
     {% set total = 0 %}
+
+    {% if paniers|length == 0%}
+        <p>Panier is vide</p>
+    {% else %}
     <table>
         <tr>
             <th>Libelle</th>
@@ -19,10 +22,6 @@
             <th>Total price</th>
             <th>Action</th>
         </tr>
-
-        {% if paniers|length is null %}
-            <p>Panier is vide</p>
-        {% else %}
             {% for panier in paniers %}
                 {% set totalQuantity =  totalQuantity + panier.desireQuantity %}
                 {% set totalPrice = (panier.product.unitPrice * panier.desireQuantity) %}
@@ -33,7 +32,6 @@
                     <td>{{ panier.desireQuantity }}</td>
                     <td>{{ totalPrice}}</td>
                     <td>
-
                         <a href="{{ path('panier_delete', {'id': panier.product.id}) }}">Supprimer</a>
 
                     </td>
@@ -46,7 +44,6 @@
                 <td>{{ total }}</td>
             </tr>
         {% endif %}
-
 
         <tr>
             <td colspan="3"></td>

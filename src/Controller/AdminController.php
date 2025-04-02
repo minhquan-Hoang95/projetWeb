@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -44,13 +45,33 @@ final class AdminController extends AbstractController
         $userRepository = $em->getRepository(User::class);
         $user = $userRepository->find($id);
 
+        // As an admin, verify if the client you want to remove is not connected or logged
+
+
+
+        // Verify if the user exists
         if (is_null($user))
             throw $this->createNotFoundException('user ' . $id . ' inexistant');
+        // vérifier si l'user a un panier
+
+
+
         $roles = $user->getRoles();
         if(in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles))
         {
             $this->addFlash('info', 'Vous ne pouvez pas supprimer un admin');
             return $this->redirectToRoute('admin_editUser');
+        }
+
+        $paniers = $user->getPaniers();
+
+        if($paniers)
+        {
+            foreach ($paniers as $panier)
+            {
+                $em->remove($panier);
+            }
+            $this->addFlash('info', 'Panier supprimé');
         }
 
         $em->remove($user);
@@ -74,12 +95,14 @@ final class AdminController extends AbstractController
             $em->persist($product);
             $em->flush();
             $this->addFlash('info', 'Produit ajouté');
-            return  $this->redirectToRoute('home_index');
+            return $this->redirectToRoute('admin_index');
         }
+
         if($form->isSubmitted())
         {
             $this->addFlash('info', 'Formulaire incorrect');
         }
+
 
         $args = array(
             'myform' => $form
@@ -88,6 +111,7 @@ final class AdminController extends AbstractController
 
         return $this->render('Admin/addProduct.html.twig', $args);
     }
+
 
 
 

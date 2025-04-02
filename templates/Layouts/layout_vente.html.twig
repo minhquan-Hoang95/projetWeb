@@ -4,12 +4,9 @@
 
 
 {% block css %}
-    {#{{ parent() }}#}
-    <link rel="stylesheet" href="{{ asset('css/default.css') }}">
+    {{ parent() }}
 
-{#
     <link rel="stylesheet" media="screen" type="text/css" title="default" href="{{ asset('css/default.css') }}">
-#}
 {% endblock %}
 
 {% block javascript %}
@@ -19,29 +16,24 @@
 {% endblock %}
 
 {% block body %}
-    <p>Should message flash when disconnecting but haven't gotten yet</p>
-    <div id="flash">
-        {% include 'Layouts/flash.html.twig' %}
-    </div>
+        <div id="header">
+            {% include 'Layouts/header.html.twig' %}
+        </div>
+        <div id="flash">
+            {% include 'Layouts/flash.html.twig' %}
+        </div>
+        <div id="titre">
+            <h1>{% block titre_principal %}Site de vente{% endblock %}</h1>
+        </div>
+        <div id="menu">
+            {{ render(controller('App\\Controller\\HomeController::menuAction')) }}
+        </div>
+        <div id="vue">
+            {% block vue %}
 
-    <div id="header">
-        {% include 'Layouts/header.html.twig' %}
-    </div>
-    <div id="titre">
-        <h1>{% block titre_principal %}Site de vente{% endblock %}</h1>
-    </div>
-    <div id="menu">
-        {{ render(controller('App\\Controller\\HomeController::menuAction')) }}
-    </div>
-    <div id="vue">
-        {% block vue %}
-
-        {% endblock %}
-    </div>
-    <div id="footer">
-        <p>Je suis la</p>
-{#
-        {% include 'Layouts/footer.html.twig' %}
-#}
-    </div>
+            {% endblock %}
+        </div>
+        <div id="footer">
+            {% include 'Layouts/footer.html.twig' %}
+        </div>
 {% endblock %}

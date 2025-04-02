@@ -1,14 +1,14 @@
 {% extends 'Layouts/layout_vente.html.twig' %}
-{#{% block title %}
+{% block title %}
     {{ parent() }} Lister les produits en magasin
 {% endblock %}
 
 {% block titre_principal %}
     {{ parent() }} Lister produits en magasin
-{% endblock %}#}
+{% endblock %}
 
 {% block vue %}
-    {% if products|length is null %}
+    {% if products|length == 0 %}
         <p>Il n'y a aucun produit dans la base de données</p>
     {% else %}
     <table>
@@ -24,20 +24,37 @@
             <td>{{ product.libelle }}</td>
             <td>{{ product.unitPrice }}</td>
             <td>{{ product.quantityInStock }}</td>
-            {% if product.quantityInStock > 0 %}
-{#
-                {{ form_start(myforms[product.id]), {'action' : path('product_commander', {'product' : product.id})} }}
-#}
-                {{ form_start(myforms[product.id])}}
-            <td>
-                    {{ form_widget(myforms[product.id].choix) }}
-            </td>
-            <td>
-                    {{ form_widget(myforms[product.id].action) }}
-            </td>
-            {{ form_end(myforms[product.id]) }}
-            {% endif %}
 
+            {% if product.quantityInStock == 0 %}
+                {% set inPanier = false %}
+                {% for panier in paniers %}
+                    {% if panier.product.id == product.id %}
+                        {% set inPanier = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if inPanier %}
+                    {{ form_start(myforms[product.id]) }}
+                    <td>
+                        {{ form_widget(myforms[product.id].choix) }}
+                    </td>
+                    <td>
+                        {{ form_widget(myforms[product.id].action) }}
+                    </td>
+                    {{ form_end(myforms[product.id]) }}
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            {% else %}
+                {{ form_start(myforms[product.id]) }}
+                <td>
+                    {{ form_widget(myforms[product.id].choix) }}
+                </td>
+                <td>
+                    {{ form_widget(myforms[product.id].action) }}
+                </td>
+                {{ form_end(myforms[product.id]) }}
+            {% endif %}
 
         </tr>
         {% endfor %}
@@ -45,5 +62,28 @@
     </table>
     {% endif %}
 
+{#
     {{ dump(myforms) }}
+#}
 {% endblock %}
+
+
+{#
+{% if product.quantityInStock == 0 and product.id is not in app.user.paniers %}
+    <td>{{ product.libelle }}</td>
+    <td>{{ product.unitPrice }}</td>
+    <td>{{ product.quantityInStock }}</td>
+
+{% else %}
+    <td>{{ product.libelle }}</td>
+    <td>{{ product.unitPrice }}</td>
+    <td>{{ product.quantityInStock }}</td>
+    {{ form_start(myforms[product.id])}}
+    <td>
+        {{ form_widget(myforms[product.id].choix) }}
+    </td>
+    <td>
+        {{ form_widget(myforms[product.id].action) }}
+    </td>
+    {{ form_end(myforms[product.id]) }}
+{% endif %}#}

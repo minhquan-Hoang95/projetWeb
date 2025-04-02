@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\Product;
+use App\Service\CountService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -22,6 +23,7 @@ final class PanierController extends AbstractController
     {
         $panierRepository = $em->getRepository(Panier::class);
         $paniers = $panierRepository->findAll();
+
 
         $args = array(
             'paniers' => $paniers,
@@ -71,7 +73,7 @@ final class PanierController extends AbstractController
             throw $this->createNotFoundException('Panier inexistant');
         }
 
-        $product->removePanier($panier);
+        $product->removePanier($panier); // remove panier from product to avoid circular reference
         $product->setQuantityInStock($product->getQuantityInStock() + $panier->getDesireQuantity());
 
         $em->remove($panier);
@@ -88,11 +90,12 @@ final class PanierController extends AbstractController
         $panierRepository = $em->getRepository(Panier::class);
         $paniers = $panierRepository->findBy(['user' => $user]);
 
-        $productRepository = $em->getRepository(Product::class);
+       // $productRepository = $em->getRepository(Product::class);
 
         foreach ($paniers as $panier) {
-            $product = $productRepository->find($panier->getProduct());
-            $this->deleteAction($product->getId(), $em);
+/*            $product = $productRepository->find($panier->getProduct());*/
+            $productId = $panier->getProduct()->getId();
+            $this->deleteAction($productId, $em);
 
         }
 
